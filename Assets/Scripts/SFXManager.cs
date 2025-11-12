@@ -10,6 +10,9 @@ public class SFXManager : MonoBehaviour
     public AudioClip playerExplosion;
     public AudioClip BgMusicGameplay;
     public AudioClip BgMusicTitleScreen;
+    public AudioClip impressiveScore1;
+    public AudioClip impressiveScore2;
+    public AudioClip impressiveScore3;
 
     private AudioSource SFXaudioSource;
 
@@ -57,8 +60,6 @@ public class SFXManager : MonoBehaviour
     //called in the AsteroidDestroy script
     public void AsteroidExplosion()
     {
-        float randomPitch = Random.Range(1f - pitchVariance, 1f + pitchVariance);
-        SFXaudioSource.pitch = randomPitch;
         SFXaudioSource.PlayOneShot(asteroidExplosion);
     }
 
@@ -79,5 +80,21 @@ public class SFXManager : MonoBehaviour
     public AudioSource GetBgMusicAudioSource()
     {
         return BgMusicAudioSource;
+    }
+
+    public void PlayScoreMilestone(int milestone)
+    {
+        switch (milestone)
+        {
+            case 100:
+                SFXaudioSource.PlayOneShot(impressiveScore1);
+                break;
+            case 200:
+                SFXaudioSource.PlayOneShot(impressiveScore2);
+                break;
+            case 300:
+                SFXaudioSource.PlayOneShot(impressiveScore3);
+                break;
+        }
     }
 }

@@ -24,6 +24,9 @@ public class GameManager : MonoBehaviour
     public GameObject PausedMenuUI;
     public GameObject GameOverUI;
 
+    private HashSet<int> milestonesReached = new HashSet<int>();
+    private int[] scoreMilestones = { 100, 200, 300 };
+
     private GameObject asteroidSpawner;
 
     private bool gameOver;
@@ -33,7 +36,7 @@ public class GameManager : MonoBehaviour
     //private GameState LastgameState;
 
 
-    // Specifies this script and all its children as a singleton, Awake function below deletes any extra copies of this onbject so that there exists only a "Single" instance of itself
+    // Specifies this script and all its children as a singleton, Awake function below deletes any extra copies of this object so that there exists only a "Single" instance of itself
     public static GameManager Instance;
 
     void Awake()
@@ -65,6 +68,18 @@ public class GameManager : MonoBehaviour
     {
         scoreText.text = score.ToString();
         shieldText.text = shield.ToString();
+
+        foreach (int milestone in scoreMilestones)
+        {
+            if (score >= milestone && !milestonesReached.Contains(milestone))
+            {
+                milestonesReached.Add(milestone);
+                if (sfxManager != null)
+                {
+                    sfxManager.PlayScoreMilestone(milestone);
+                }
+            }
+        }
 
         if (shield < 0)
         {  
@@ -134,6 +149,7 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
+        milestonesReached.Clear();
         gameState = GameState.Gameplay;
         shield = 3;
         score = 0;
